@@ -1,0 +1,13 @@
+[package]
+distribution = "2201.9.2"
+org = "ballerinax"
+name = "openai.images"
+version = "@toml.version@"
+license = ["Apache-2.0"]
+authors = ["Ballerina"]
+keywords = [] # TODO: Add keywords
+icon = "icon.png" # TODO: Add icon
+repository = "https://github.com/ballerina-platform/module-ballerinax-openai.images"
+
+[build-options]
+observabilityIncluded = true
