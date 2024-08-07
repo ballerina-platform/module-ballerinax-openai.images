@@ -8552,7 +8552,7 @@ components:
                     maximum: 10
                     default: 1
                     example: 1
-                    nullable: true
+                    # nullable: true
                     description: The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only `n=1` is supported.
                 quality:
                     type: string
@@ -8649,7 +8649,7 @@ components:
                     maximum: 10
                     default: 1
                     example: 1
-                    nullable: true
+                    # nullable: true
                     description: The number of images to generate. Must be between 1 and 10.
                 size: &dalle2_images_size
                     type: string

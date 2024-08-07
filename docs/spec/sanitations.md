@@ -19,6 +19,17 @@ This document records the sanitation done on top of the official OpenAPI specifi
 
    - **Reason**: This change is done as a workaround for ballerina openapi tool not allowing to generate the client.
 
+2. **Removed the `nullable: true` property of the field `n` from the below schemas**
+
+    - **Changed Schemas**: `CreateImageRequest`,`CreateImageEditRequest`
+
+    - **Original**
+        - `n:`
+         &nbsp;&nbsp;`nullable: true`
+    - **Updated**:
+        - Removed the `nullable` parameter
+    - **Reason**: This change was made because the server does not accept `null` for `n`. Additionally, the integer min-max constraints were not applied because the variable was generated as a union type.    
+
 ## OpenAPI cli command
 
 The following command was used to generate the Ballerina client from the OpenAPI specification. The command should be executed from the repository root directory.
