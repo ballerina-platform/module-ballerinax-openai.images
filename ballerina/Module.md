@@ -14,7 +14,7 @@ To use the OpenAI Connector, you must have access to the OpenAI API through a [O
 
 
 2. Navigate to Dashboard -> API keys
-<img src=https://raw.githubusercontent.com/G5andeepD/module-ballerinax-openai.images/docs/docs/setup/resources/nagivate-api-key-dashboard.png alt="OpenAI Platform" style="width: 70%;">
+<img src=https://raw.githubusercontent.com/G5andeepD/module-ballerinax-openai.images/docs/docs/setup/resources/navigate-api-key-dashboard.png alt="OpenAI Platform" style="width: 70%;">
 
 
 3. Click on the "Create new secret key" button
