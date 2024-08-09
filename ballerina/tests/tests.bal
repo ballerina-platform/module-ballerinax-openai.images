@@ -30,7 +30,7 @@ ConnectionConfig config = {
     }
 };
 
-final Client openaiClient = check new(config,serviceUrl);
+final Client openAIImages = check new(config,serviceUrl);
 
 @test:Config {
     groups: ["live_tests", "mock_tests"]
@@ -51,7 +51,7 @@ isolated function testSendImageVariationRequest() returns error? {
     };
 
     // Call the `post images/variations` resource to create a variation of an image
-    var response = openaiClient->/images/variations.post(request);
+    var response = openAIImages->/images/variations.post(request);
     
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
 
@@ -78,7 +78,7 @@ isolated function testSendImageEditRequest() returns error? {
     };
 
     // Call the `post images/edits` resource to create an edited image
-    var response = openaiClient->/images/edits.post(request);
+    var response = openAIImages->/images/edits.post(request);
    
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
     
@@ -99,7 +99,7 @@ isolated function testSendImageGenerateRequest() returns error? {
     };
 
     // Call the `post images/generations` resource to create an image
-    var response = openaiClient->/images/generations.post(request);
+    var response = openAIImages->/images/generations.post(request);
 
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
     
