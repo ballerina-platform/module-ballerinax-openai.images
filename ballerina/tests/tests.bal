@@ -50,7 +50,6 @@ isolated function testSendImageVariationRequest() returns error? {
         response_format: "url"
     };
 
-    // Call the `post images/variations` resource to create a variation of an image
     var response = openAIImages->/images/variations.post(request);
     
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
@@ -77,7 +76,6 @@ isolated function testSendImageEditRequest() returns error? {
         response_format: "url"
     };
 
-    // Call the `post images/edits` resource to create an edited image
     var response = openAIImages->/images/edits.post(request);
    
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
@@ -98,7 +96,6 @@ isolated function testSendImageGenerateRequest() returns error? {
         response_format: "url"
     };
 
-    // Call the `post images/generations` resource to create an image
     var response = openAIImages->/images/generations.post(request);
 
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
