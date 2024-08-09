@@ -54,7 +54,6 @@ isolated function testSendImageVariationRequest() returns error? {
     
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
 
-    return;
 }
 
 @test:Config {
@@ -79,8 +78,6 @@ isolated function testSendImageEditRequest() returns error? {
     var response = openAIImages->/images/edits.post(request);
    
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
-    
-    return;
 
 }
 
@@ -100,5 +97,4 @@ isolated function testSendImageGenerateRequest() returns error? {
 
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
     
-    return;
 }
