@@ -79,7 +79,7 @@ public function main() returns error? {
         response_format: "url"        
     };
 
-    ImageResponse|error response = openai->/images/generations.post(request);
+    ImageResponse response = check openaiImages->/images/generations.post(request);
 
     if (response is ImagesResponse) {
         io:println("Created images: ", response.data);
