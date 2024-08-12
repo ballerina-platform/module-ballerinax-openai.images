@@ -55,7 +55,7 @@ apiKey = "<API Key>"
 ```ballerina
 configurable string apiKey = ?;
 
-final images:Client openai = check new({
+final images:Client openaiImages = check new({
     auth: {
         apiKey
     }
