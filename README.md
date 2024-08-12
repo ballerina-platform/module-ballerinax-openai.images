@@ -44,13 +44,7 @@ import ballerinax/openai.images;
 
 ### Step 2: Instantiate a new connector
 
-1. Create a `Config.toml` file and, configure the obtained credentials in the above steps as follows:
-
-```bash
-apiKey = "<API Key>"
-```
-
-2. Create a `images:ConnectionConfig` with the obtained API Key and initialize the connector with it.
+Create a `images:ConnectionConfig` with the obtained API Key and initialize the connector.
 
 ```ballerina
 configurable string apiKey = ?;
