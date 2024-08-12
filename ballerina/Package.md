@@ -81,7 +81,7 @@ public function main() returns error? {
 
     // Call the `post images/generations` resource to generate an image
 
-    var response = openai->/images/generations.post(request);
+    ImageResponse|error response = openai->/images/generations.post(request);
 
     if (response is ImagesResponse) {
         io:println("Created images: ", response.data);
