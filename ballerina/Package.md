@@ -36,18 +36,12 @@ import ballerinax/openai.images;
 
 ### Step 2: Instantiate a new connector
 
-1. Create a `Config.toml` file and, configure the obtained credentials in the above steps as follows:
-
-```bash
-apiKey = "<API Key>"
-```
-
-2. Create a `images:ConnectionConfig` with the obtained API Key and initialize the connector with it.
+Create a `images:ConnectionConfig` with the obtained API Key and initialize the connector.
 
 ```ballerina
 configurable string apiKey = ?;
 
-final images:Client openai = check new({
+final images:Client openaiImages = check new({
     auth: {
         apiKey
     }
@@ -71,14 +65,8 @@ public function main() returns error? {
         response_format: "url"        
     };
 
-    ImageResponse|error response = openai->/images/generations.post(request);
-
-    if (response is ImagesResponse) {
-        io:println("Created images: ", response.data);
-    } else {
-        io:println("Error: ", response);
-    }
-
+    ImageResponse response = check openaiImages->/images/generations.post(request);
+    io:println("Created images: ", response.data);
 }
 ```
 
@@ -87,9 +75,3 @@ public function main() returns error? {
 ```bash
 bal run
 ```
-
-## Examples
-
-The `OpenAI Images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-openai-images/tree/main/examples/), covering the following use cases:
-
-[//]: # (TODO: Add examples)
