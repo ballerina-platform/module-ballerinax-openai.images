@@ -97,7 +97,6 @@ public function main() returns error? {
         io:println("Error: ", response);
     }
 
-    return;
 }
 ```
 
