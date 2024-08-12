@@ -87,8 +87,6 @@ public function main() returns error? {
         response_format: "url"        
     };
 
-    // Call the `post images/generations` resource to generate an image
-
     ImageResponse|error response = openai->/images/generations.post(request);
 
     if (response is ImagesResponse) {
