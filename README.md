@@ -80,13 +80,7 @@ public function main() returns error? {
     };
 
     ImageResponse response = check openaiImages->/images/generations.post(request);
-
-    if (response is ImagesResponse) {
-        io:println("Created images: ", response.data);
-    } else {
-        io:println("Error: ", response);
-    }
-
+    io:println("Created images: ", response.data);
 }
 ```
 
