@@ -43,7 +43,7 @@ configurable string apiKey = ?;
 
 final images:Client openaiImages = check new({
     auth: {
-        apiKey
+        token: apiKey
     }
 });
 ```
