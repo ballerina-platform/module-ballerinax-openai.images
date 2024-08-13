@@ -15,15 +15,15 @@
 // under the License.
 
 import ballerina/test;
+import ballerina/os;
 
-configurable boolean isLiveServer = ?;
-configurable string apiKey = ?;
-configurable string RuntimeApiKey = isLiveServer ? apiKey : "test";
+configurable boolean isLiveServer = os:getEnv("IS_LIVE_SERVER") == "true";
+configurable string apiKey = isLiveServer ? os:getEnv("OPENAI_API_KEY") : "test";
 configurable string serviceUrl = isLiveServer ? "https://api.openai.com/v1" : "http://localhost:9090";
 
 ConnectionConfig config = {
     auth: {
-        token:RuntimeApiKey
+        token: apiKey
     }
 };
 
