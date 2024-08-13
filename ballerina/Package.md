@@ -66,7 +66,7 @@ public function main() returns error? {
     };
 
     ImageResponse response = check openaiImages->/images/generations.post(request);
-    io:println("Created images: ", response.data);
+
 }
 ```
 
