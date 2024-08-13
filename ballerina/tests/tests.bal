@@ -48,9 +48,7 @@ isolated function testSendImageVariationRequest() returns error? {
     };
 
     ImagesResponse|error response = openAIImages->/images/variations.post(request);
-
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
-
 }
 
 @test:Config {
@@ -71,9 +69,7 @@ isolated function testSendImageEditRequest() returns error? {
     };
 
     ImagesResponse|error response = openAIImages->/images/edits.post(request);
-
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
-
 }
 
 @test:Config {
@@ -89,7 +85,5 @@ isolated function testSendImageGenerateRequest() returns error? {
     };
 
     ImagesResponse|error response = openAIImages->/images/generations.post(request);
-
     test:assertTrue(response is ImagesResponse, msg = "Response is not of type ImagesResponse");
-
 }
