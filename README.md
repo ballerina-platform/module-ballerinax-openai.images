@@ -49,9 +49,9 @@ Create a `images:ConnectionConfig` with the obtained API Key and initialize the 
 ```ballerina
 configurable string apiKey = ?;
 
-final images:Client openaiImages = check new({
+final images:Client openAIImages = check new ({
     auth: {
-        apiKey
+        token: apiKey
     }
 });
 ```
@@ -73,7 +73,7 @@ public function main() returns error? {
         response_format: "url"        
     };
 
-    ImageResponse response = check openaiImages->/images/generations.post(request);
+    ImageResponse response = check openAIImages->/images/generations.post(request);
 }
 ```
 
