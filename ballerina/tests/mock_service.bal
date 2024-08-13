@@ -20,7 +20,7 @@ import ballerina/log;
 listener http:Listener httpListener = new (9090);
 
 http:Service mockService = service object {
-    
+
     # Creates an edited or extended image given an original image and a prompt.
     #
     # + return - ImageResponse 
@@ -69,7 +69,7 @@ http:Service mockService = service object {
 };
 
 function init() returns error? {
-     if isLiveServer {
+    if isLiveServer {
         log:printInfo("Skiping mock server initialization as the tests are running on live server");
         return;
     }
