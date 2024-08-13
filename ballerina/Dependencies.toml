@@ -10,7 +10,7 @@ distribution-version = "2201.9.2"
 [[package]]
 org = "ballerina"
 name = "auth"
-version = "2.11.1"
+version = "2.11.2"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -260,6 +260,9 @@ dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"}
 ]
+modules = [
+	{org = "ballerina", packageName = "os", moduleName = "os"}
+]
 
 [[package]]
 org = "ballerina"
@@ -324,6 +327,7 @@ dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "log"},
 	{org = "ballerina", name = "mime"},
+	{org = "ballerina", name = "os"},
 	{org = "ballerina", name = "test"},
 	{org = "ballerina", name = "url"},
 	{org = "ballerinai", name = "observe"}
