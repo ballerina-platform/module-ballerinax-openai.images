@@ -65,7 +65,7 @@ public function main() returns error? {
             io:println("Variations generated successfully.");
 
             // Save each variation to a file
-            foreach var i in 0..<variationResponse.data.length() {
+            foreach var i in 0 ..< variationResponse.data.length() {
                 string? b64VariationImage = variationResponse.data[i].b64_json;
 
                 if (b64VariationImage is string) {
