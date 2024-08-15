@@ -64,7 +64,7 @@ public function main() returns error? {
                 io:println("Generated image saved successfully as 'images/coding_developer.png'.");
             }
 
-            io:println("Please Convert the  generated image to RGBA format and create a mask.");
+            io:println("Please Convert the generated image to RGBA format and create a mask.");
             io:println("Once done, provide the paths to the converted image and mask.");
             io:println("If you just hit Enter, the premade converted image and mask will be used.");
 
