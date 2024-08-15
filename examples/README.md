@@ -2,13 +2,20 @@
 
 The `ballerinax/openai.images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples), covering use cases like cache management, session management, and rate limiting.
 
-[//]: # (TODO: Add examples)
-1. 
-2. 
+1. Generate an Image and Edit It with a Mask
+2. Generate a Product Image and Create Variations
 
 ## Prerequisites
 
-[//]: # (TODO: Add prerequisites)
+### 1. Setup OpenAI Account
+To get started, you'll need to have an OpenAI account and obtain an API key. Refer to the [Setup guide](https://central.ballerina.io/ballerinax/openai.images/latest#prerequisites) for more details on how to set up your account and obtain the API key.
+
+### 2. Configuration
+Create a `Config.toml` file in the example's root directory and provide your OpenAI account-related configurations as follows:
+
+```toml
+apiKey = "<Your OpenAI API Key>"
+```
 
 ## Running an Example
 
