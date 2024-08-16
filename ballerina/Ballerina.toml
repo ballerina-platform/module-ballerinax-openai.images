@@ -1,5 +1,5 @@
 [package]
-distribution = "2201.9.2"
+distribution = "2201.9.3"
 org = "ballerinax"
 name = "openai.images"
 version = "1.0.5"
