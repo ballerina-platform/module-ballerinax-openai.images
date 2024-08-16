@@ -73,7 +73,7 @@ public function main() returns error? {
         response_format: "url"        
     };
 
-    ImageResponse response = check openAIImages->/images/generations.post(request);
+    images:ImagesResponse response = check openAIImages->/images/generations.post(request);
 }
 ```
 
