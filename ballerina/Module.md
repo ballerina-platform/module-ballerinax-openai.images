@@ -78,8 +78,8 @@ bal run
 
 ## Examples
 
-The `OpenAI Images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-openai-images/tree/main/examples/), covering the following use cases:
+The `OpenAI Images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/), covering the following use cases:
 
-1. [Generate and edit images](https://github.com/module-ballerinax-openai-images/tree/main/examples/generate_and_edit_image) - Generate an image based on a textual description and edit it using a mask.
+1. [Generate and edit images](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/generate_and_edit_image) - Generate an image based on a textual description and edit it using a mask.
 
-2. [Generate a product image and create variations](https://github.com/module-ballerinax-openai-images/tree/main/examples/generate_product_image_and_create_variations) - Generate a product image from a textual description and create multiple variations, useful for product design and marketing.
+2. [Generate a product image and create variations](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/generate_product_image_and_create_variations) - Generate a product image from a textual description and create multiple variations, useful for product design and marketing.
