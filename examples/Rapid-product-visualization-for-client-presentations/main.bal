@@ -48,15 +48,15 @@ public function main() returns error? {
     // Save the generated product image in base64 format
     string? b64GenImage = generationResponse.data[0].b64_json;
 
-    if (b64GenImage is string) {
+    if b64GenImage is string {
         io:println("Saving the generated product image...");
         // Decode the base64 string to get image bytes
         string|byte[]|io:ReadableByteChannel|mime:DecodeError genImageBytes = mime:base64Decode(b64GenImage.toBytes());
-        if (genImageBytes is byte[]) {
+        if genImageBytes is byte[] {
             // Save the base image to a file
             error? saveGenImageResult = io:fileWriteBytes("images/product_image.png", genImageBytes);
 
-            if (saveGenImageResult is error) {
+            if saveGenImageResult is error {
                 io:println("Error writing the base image to a file: ", saveGenImageResult);
                 return;
             } else {
@@ -84,16 +84,16 @@ public function main() returns error? {
             foreach var i in 0 ..< variationResponse.data.length() {
                 string? b64VariationImage = variationResponse.data[i].b64_json;
 
-                if (b64VariationImage is string) {
+                if b64VariationImage is string {
                     io:println("Saving variation ", i + 1, "...");
                     // Decode the base64 string to get variation image bytes
                     string|byte[]|io:ReadableByteChannel|mime:DecodeError variationImageBytes = mime:base64Decode(b64VariationImage.toBytes());
-                    if (variationImageBytes is byte[]) {
+                    if variationImageBytes is byte[] {
                         // Save the variation image to a file
                         string variationFileName = string `images/product_image_variation_${i + 1}.png`;
                         error? saveVariationImageResult = io:fileWriteBytes(variationFileName, variationImageBytes);
 
-                        if (saveVariationImageResult is error) {
+                        if saveVariationImageResult is error {
                             io:println("Error writing variation ", i + 1, " to a file: ", saveVariationImageResult);
                         } else {
                             io:println("Variation ", i + 1, " saved successfully as '", variationFileName, "'.");

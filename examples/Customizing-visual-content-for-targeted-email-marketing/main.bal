@@ -49,15 +49,15 @@ public function main() returns error? {
 
     string? b64GenImage = generationResponse.data[0].b64_json;
 
-    if (b64GenImage is string) {
+    if b64GenImage is string {
         io:println("Saving the generated image...");
         // Decode the base64 string to get image bytes
         string|byte[]|io:ReadableByteChannel|mime:DecodeError genImageBytes = mime:base64Decode(b64GenImage.toBytes());
-        if (genImageBytes is byte[]) {
+        if genImageBytes is byte[] {
             // Save the generated image to a file
             error? saveGenImageResult = io:fileWriteBytes("images/coding_developer.png", genImageBytes);
 
-            if (saveGenImageResult is error) {
+            if saveGenImageResult is error {
                 io:println("Error writing the base image to a file: ", saveGenImageResult);
                 return;
             } else {
@@ -107,15 +107,15 @@ public function main() returns error? {
             // Save the edited image in base64 format
             string? b64EditImage = editResponse.data[0].b64_json;
 
-            if (b64EditImage is string) {
+            if b64EditImage is string {
                 io:println("Saving the edited image...");
                 // Decode the base64 string to get edited image bytes
                 string|byte[]|io:ReadableByteChannel|mime:DecodeError editedImageBytes = mime:base64Decode(b64EditImage.toBytes());
-                if (editedImageBytes is byte[]) {
+                if editedImageBytes is byte[] {
                     // Save the edited image to a file
                     error? saveEditedImageResult = io:fileWriteBytes("images/edited_coding_developer.png", editedImageBytes);
 
-                    if (saveEditedImageResult is error) {
+                    if saveEditedImageResult is error {
                         io:println("Error writing the edited image to a file: ", saveEditedImageResult);
                     } else {
                         io:println("Edited image saved successfully as 'images/edited_coding_developer.png'.");
