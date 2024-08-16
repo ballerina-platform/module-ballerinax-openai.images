@@ -5,7 +5,7 @@
 
 [ballerina]
 dependencies-toml-version = "2"
-distribution-version = "2201.9.2"
+distribution-version = "2201.9.3"
 
 [[package]]
 org = "ballerina"
@@ -321,7 +321,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "openai.images"
-version = "1.0.5"
+version = "2.0.0"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "http"},
