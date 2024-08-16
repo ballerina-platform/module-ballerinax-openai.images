@@ -96,7 +96,7 @@ public function main() returns error? {
                         if saveVariationImageResult is error {
                             io:println("Error writing variation ", i + 1, " to a file: ", saveVariationImageResult);
                         } else {
-                            io:println("Variation ", i + 1, " saved successfully as '", variationFileName, "'.");
+                            io:println(string `Variation ${i + 1} saved successfully as '${variationFileName}'.`);
                         }
                     }
                 }
