@@ -19,7 +19,7 @@ You can run the tests in either of these environments, and each has its own comp
 
 ## Running Tests in the Mock Server
 
-To execute the tests on the mock server, ensure that the `isLiveServer` environment variable is either set to `false` or left unset before initiating the tests.
+To execute the tests on the mock server, ensure that the `IS_LIVE_SERVER` environment variable is either set to `false` or left unset before initiating the tests.
 
 This environment variable can be configured within the `Config.toml` file located in the `tests` directory or specified as an environment variable.
 
@@ -38,13 +38,13 @@ Alternatively, you can set the environment variable directly.
 For Linux or macOS:
 
 ```bash
-export isLiveServer=false
+export IS_LIVE_SERVER=false
 ```
 
 For Windows:
 
 ```bash
-setx isLiveServer false
+setx IS_LIVE_SERVER false
 ```
 
 Then, run the following command to execute the tests:
@@ -71,15 +71,15 @@ Alternatively, you can set your authentication credentials as environment variab
 For Linux or macOS:
 
 ```bash
-export isLiveServer=true
-export apiKey="<your-openAI-api-key>"
+export IS_LIVE_SERVER=true
+export OPENAI_API_KEY="<your-openAI-api-key>"
 ```
 
 For Windows:
 
 ```bash
-setx isLiveServer true
-setx apiKey <your-openAI-api-key>
+setx IS_LIVE_SERVER true
+setx OPENAI_API_KEY <your-openAI-api-key>
 ```
 
 Then, run the following command to execute the tests:
