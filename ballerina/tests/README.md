@@ -19,7 +19,7 @@ You can run the tests in either of these environments, and each has its own comp
 
 ## Running Tests in the Mock Server
 
-To execute the tests on the mock server, ensure that the `isLiveServer` environment variable is either set to `false` or left unset before initiating the tests.
+To execute the tests on the mock server, ensure that the `IS_LIVE_SERVER` environment variable is either set to `false` or left unset before initiating the tests.
 
 This environment variable can be configured within the `Config.toml` file located in the `tests` directory or specified as an environment variable.
 
