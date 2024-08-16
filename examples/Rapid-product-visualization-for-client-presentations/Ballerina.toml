@@ -1,6 +1,6 @@
 [package]
 org = "wso2"
-name = "generate_product_image_and_create_variations"
+name = "rapid_product_visualization_for_client_presentations"
 version = "0.1.0"
 distribution = "2201.9.2"
 

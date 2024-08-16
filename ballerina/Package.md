@@ -82,4 +82,4 @@ The `OpenAI Images` connector provides practical examples illustrating usage in 
 
 1. [Customizing visual content for targeted email marketing](https://github.com/ballerina-platform/module-ballerinax-openai.finetunes/tree/main/examples/Customizing-visual-content-for-targeted-email-marketing) - Create personalized visual content for targeted email marketing by generating and editing images to include specific products.
 
-2. [Generate a product image and create variations](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/generate_product_image_and_create_variations) - Generate a product image from a textual description and create multiple variations, useful for product design and marketing.
+2. [Rapid product visualization for client presentations](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/Rapid-product-visualization-for-client-presentations) - Generate and vary product images for client presentations to showcase different design options and aid decision-making.

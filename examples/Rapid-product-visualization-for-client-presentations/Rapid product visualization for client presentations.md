@@ -1,6 +1,6 @@
-# Generate a Product Image and Create Variations
+# Rapid product visualization for client presentations
 
-This example demonstrates how to generate a product image based on a textual description and then create multiple variations of the generated image. The example leverages the OpenAI Images API to automate image generation and variation creation, showcasing its utility in product design and marketing.
+This example demonstrates rapid product visualization for client presentations by generating a base image of a smartphone and producing variations to illustrate different design options. This approach enables designers and marketing teams to present a range of concepts to clients, helping them visualize the final product and make informed decisions.
 
 ## Prerequisites
 
