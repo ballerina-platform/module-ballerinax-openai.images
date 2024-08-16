@@ -1,6 +1,6 @@
-# Generate an Image and Edit It with a Mask
+# Customizing visual content for targeted email marketing
 
-This example demonstrates how to generate an image based on a textual description and then edit the generated image using a mask. The example leverages the OpenAI Images API to automate image generation and editing, showcasing its flexibility and power.
+This example demonstrates how to personalize visual content for a targeted email marketing campaign. By generating an image of a workspace and adding a specific product—a fizzing drink bottle—the use case shows how companies can create customized visuals that resonate with different customer segments, enhancing the impact of their email marketing efforts.
 
 ## Prerequisites
 
