@@ -1,4 +1,4 @@
-# Rapid product visualization for client presentations
+# Rapid product visualizer
 
 This example demonstrates rapid product visualization for client presentations by generating a base image of a smartphone and producing variations to illustrate different design options. This approach enables designers and marketing teams to present a range of concepts to clients, helping them visualize the final product and make informed decisions.
 

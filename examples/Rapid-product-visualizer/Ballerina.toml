@@ -1,6 +1,6 @@
 [package]
 org = "wso2"
-name = "customizing_visual_content_for_targeted_email_marketing"
+name = "rapid_product_visualizer"
 version = "0.1.0"
 distribution = "2201.9.3"
 

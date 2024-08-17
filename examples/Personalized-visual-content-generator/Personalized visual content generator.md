@@ -1,4 +1,4 @@
-# Customizing visual content for targeted email marketing
+# Personalized visual content generator
 
 This example demonstrates how to personalize visual content for a targeted email marketing campaign. By generating an image of a workspace and adding a specific product—a fizzing drink bottle—the use case shows how companies can create customized visuals that resonate with different customer segments, enhancing the impact of their email marketing efforts.
 
