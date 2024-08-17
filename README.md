@@ -85,9 +85,11 @@ bal run
 
 ## Examples
 
-The `OpenAI Images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-openai-images/tree/main/examples/), covering the following use cases:
+The `OpenAI Images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/), covering the following use cases:
 
-[//]: # (TODO: Add examples)
+1. [Personalized visual content generator](https://github.com/ballerina-platform/module-ballerinax-openai.finetunes/tree/main/example/Personalized-visual-content-generator) - Create personalized visual content for targeted email marketing by generating and editing images to include specific products.
+
+2. [Rapid product visualizer](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/Rapid-product-visualizer) - Generate and vary product images for client presentations to showcase different design options and aid decision-making.
 
 ## Build from the source
 
