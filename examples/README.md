@@ -2,8 +2,8 @@
 
 The `ballerinax/openai.images` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples), covering use cases like cache management, session management, and rate limiting.
 
-1. [Customizing visual content for targeted email marketing](https://github.com/ballerina-platform/module-ballerinax-openai.finetunes/tree/main/examples/Customizing-visual-content-for-targeted-email-marketing)
-2. [Generate a Product Image and Create Variations](https://github.com/ballerina-platform/module-ballerinax-openai.finetunes/tree/main/examples/generate_product_image_and_create_variations)
+1. [Personalized visual content generator](https://github.com/ballerina-platform/module-ballerinax-openai.finetunes/tree/main/example/Personalized-visual-content-generator) - Create personalized visual content for targeted email marketing by generating and editing images to include specific products.
+2. [Rapid product visualizer](https://github.com/ballerina-platform/module-ballerinax-openai.images/tree/main/examples/Rapid-product-visualizer) - Generate and vary product images for client presentations to showcase different design options and aid decision-making.
 
 ## Prerequisites
 
