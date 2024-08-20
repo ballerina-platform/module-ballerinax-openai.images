@@ -18,12 +18,12 @@ import ballerina/io;
 import ballerina/mime;
 import ballerinax/openai.images;
 
-configurable string apiKey = ?;
+configurable string token = ?;
 
 // Initialize the OpenAI Images client with your API key
 final images:Client openaiClient = check new ({
     auth: {
-        token: apiKey
+        token
     }
 });
 

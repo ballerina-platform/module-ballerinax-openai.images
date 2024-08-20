@@ -11,7 +11,7 @@ To get started, you'll need to have an OpenAI account and obtain an API key. Ref
 Create a `Config.toml` file in the example's root directory and provide your OpenAI account-related configurations as follows:
 
 ```toml
-apiKey = "<Your OpenAI API Key>"
+token = "<Your OpenAI API Key>"
 ```
 
 ## Run the example
