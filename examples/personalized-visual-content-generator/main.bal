@@ -20,14 +20,13 @@ import ballerinax/openai.images;
 
 configurable string token = ?;
 
-// Initialize the OpenAI Images client with your API key
-final images:Client openaiClient = check new ({
-    auth: {
-        token
-    }
-});
-
 public function main() returns error? {
+    // Initialize the OpenAI Images client with your API key
+    final images:Client openaiClient = check new ({
+        auth: {
+            token
+        }
+    });
 
     io:println("Generating an image using the OpenAI API...");
     // Generate a base image using the `images/generation` API
