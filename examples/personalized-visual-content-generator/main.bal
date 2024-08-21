@@ -18,16 +18,15 @@ import ballerina/io;
 import ballerina/mime;
 import ballerinax/openai.images;
 
-configurable string apiKey = ?;
-
-// Initialize the OpenAI Images client with your API key
-final images:Client openaiClient = check new ({
-    auth: {
-        token: apiKey
-    }
-});
+configurable string token = ?;
 
 public function main() returns error? {
+    // Initialize the OpenAI Images client with your API key
+    final images:Client openaiClient = check new ({
+        auth: {
+            token
+        }
+    });
 
     io:println("Generating an image using the OpenAI API...");
     // Generate a base image using the `images/generation` API

@@ -39,11 +39,11 @@ import ballerinax/openai.images;
 Create a `images:ConnectionConfig` with the obtained API Key and initialize the connector.
 
 ```ballerina
-configurable string apiKey = ?;
+configurable string token = ?;
 
 final images:Client openAIImages = check new ({
     auth: {
-        token: apiKey
+        token
     }
 });
 ```

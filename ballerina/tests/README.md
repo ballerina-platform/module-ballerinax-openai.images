@@ -61,7 +61,7 @@ Create a `Config.toml` file in the `tests` directory and add your authentication
 
 ```toml
 isLiveServer = true
-apiKey = "<your-openAI-api-key>"
+token = "<your-openAI-api-key>"
 ```
 
 ### Using Environment Variables
