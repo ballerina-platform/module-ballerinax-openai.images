@@ -17,6 +17,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/data.jsondata;
 import ballerina/http;
 import ballerina/mime;
 
@@ -29,42 +30,31 @@ public isolated client class Client {
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
     public isolated function init(ConnectionConfig config, string serviceUrl = "https://api.openai.com/v1") returns error? {
-        http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
-        do {
-            if config.http1Settings is ClientHttp1Settings {
-                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
-                httpClientConfig.http1Settings = {...settings};
-            }
-            if config.http2Settings is http:ClientHttp2Settings {
-                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
-            }
-            if config.cache is http:CacheConfig {
-                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
-            }
-            if config.responseLimits is http:ResponseLimitConfigs {
-                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
-            }
-            if config.secureSocket is http:ClientSecureSocket {
-                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
-            }
-            if config.proxy is http:ProxyConfig {
-                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
-            }
-        }
-        http:Client httpEp = check new (serviceUrl, httpClientConfig);
-        self.clientEp = httpEp;
-        return;
+        http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, http1Settings: config.http1Settings, http2Settings: config.http2Settings, timeout: config.timeout, forwarded: config.forwarded, followRedirects: config.followRedirects, poolConfig: config.poolConfig, cache: config.cache, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, cookieConfig: config.cookieConfig, responseLimits: config.responseLimits, secureSocket: config.secureSocket, proxy: config.proxy, socketConfig: config.socketConfig, validation: config.validation, laxDataBinding: config.laxDataBinding};
+        self.clientEp = check new (serviceUrl, httpClientConfig);
     }
 
-    # Creates an edited or extended image given an original image and a prompt.
+    # Creates a model response for the given chat conversation.
     #
     # + headers - Headers to be sent with the request 
     # + return - OK 
-    resource isolated function post images/edits(CreateImageEditRequest payload, map<string|string[]> headers = {}) returns ImagesResponse|error {
-        string resourcePath = string `/images/edits`;
+    resource isolated function post chat/completions(CreateChatCompletionRequest payload, map<string|string[]> headers = {}) returns CreateChatCompletionResponse|error {
+        string resourcePath = string `/chat/completions`;
         http:Request request = new;
-        mime:Entity[] bodyParts = check createBodyParts(payload);
-        request.setBodyParts(bodyParts);
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Creates a completion for the provided prompt and parameters.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post completions(CreateCompletionRequest payload, map<string|string[]> headers = {}) returns CreateCompletionResponse|error {
+        string resourcePath = string `/completions`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, headers);
     }
 
@@ -75,8 +65,20 @@ public isolated client class Client {
     resource isolated function post images/generations(CreateImageRequest payload, map<string|string[]> headers = {}) returns ImagesResponse|error {
         string resourcePath = string `/images/generations`;
         http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Creates an edited or extended image given an original image and a prompt.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post images/edits(CreateImageEditRequest payload, map<string|string[]> headers = {}) returns ImagesResponse|error {
+        string resourcePath = string `/images/edits`;
+        http:Request request = new;
+        mime:Entity[] bodyParts = check createBodyParts(check jsondata:toJson(payload).ensureType());
+        request.setBodyParts(bodyParts);
         return self.clientEp->post(resourcePath, request, headers);
     }
 
@@ -87,8 +89,769 @@ public isolated client class Client {
     resource isolated function post images/variations(CreateImageVariationRequest payload, map<string|string[]> headers = {}) returns ImagesResponse|error {
         string resourcePath = string `/images/variations`;
         http:Request request = new;
-        mime:Entity[] bodyParts = check createBodyParts(payload);
+        mime:Entity[] bodyParts = check createBodyParts(check jsondata:toJson(payload).ensureType());
         request.setBodyParts(bodyParts);
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Creates an embedding vector representing the input text.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post embeddings(CreateEmbeddingRequest payload, map<string|string[]> headers = {}) returns CreateEmbeddingResponse|error {
+        string resourcePath = string `/embeddings`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Generates audio from the input text.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post audio/speech(CreateSpeechRequest payload, map<string|string[]> headers = {}) returns byte[]|error {
+        string resourcePath = string `/audio/speech`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Transcribes audio into the input language.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post audio/transcriptions(CreateTranscriptionRequest payload, map<string|string[]> headers = {}) returns InlineResponse200|error {
+        string resourcePath = string `/audio/transcriptions`;
+        http:Request request = new;
+        mime:Entity[] bodyParts = check createBodyParts(check jsondata:toJson(payload).ensureType());
+        request.setBodyParts(bodyParts);
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Translates audio into English.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post audio/translations(CreateTranslationRequest payload, map<string|string[]> headers = {}) returns InlineResponse2001|error {
+        string resourcePath = string `/audio/translations`;
+        http:Request request = new;
+        mime:Entity[] bodyParts = check createBodyParts(check jsondata:toJson(payload).ensureType());
+        request.setBodyParts(bodyParts);
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Returns a list of files that belong to the user's organization.
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get files(map<string|string[]> headers = {}, *ListFilesQueries queries) returns ListFilesResponse|error {
+        string resourcePath = string `/files`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Upload a file that can be used across various endpoints. Individual files can be up to 512 MB, and the size of all files uploaded by one organization can be up to 100 GB.
+    # 
+    # The Assistants API supports files up to 2 million tokens and of specific file types. See the [Assistants Tools guide](/docs/assistants/tools) for details.
+    # 
+    # The Fine-tuning API only supports `.jsonl` files. The input also has certain required formats for fine-tuning [chat](/docs/api-reference/fine-tuning/chat-input) or [completions](/docs/api-reference/fine-tuning/completions-input) models.
+    # 
+    # The Batch API only supports `.jsonl` files up to 100 MB in size. The input also has a specific required [format](/docs/api-reference/batch/request-input).
+    # 
+    # Please [contact us](https://help.openai.com/) if you need to increase these storage limits.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post files(CreateFileRequest payload, map<string|string[]> headers = {}) returns OpenAIFile|error {
+        string resourcePath = string `/files`;
+        http:Request request = new;
+        mime:Entity[] bodyParts = check createBodyParts(check jsondata:toJson(payload).ensureType());
+        request.setBodyParts(bodyParts);
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Returns information about a specific file.
+    #
+    # + fileId - The ID of the file to use for this request
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get files/[string fileId](map<string|string[]> headers = {}) returns OpenAIFile|error {
+        string resourcePath = string `/files/${getEncodedUri(fileId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Delete a file.
+    #
+    # + fileId - The ID of the file to use for this request
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete files/[string fileId](map<string|string[]> headers = {}) returns DeleteFileResponse|error {
+        string resourcePath = string `/files/${getEncodedUri(fileId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Returns the contents of the specified file.
+    #
+    # + fileId - The ID of the file to use for this request
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get files/[string fileId]/content(map<string|string[]> headers = {}) returns string|error {
+        string resourcePath = string `/files/${getEncodedUri(fileId)}/content`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Creates an intermediate [Upload](/docs/api-reference/uploads/object) object that you can add [Parts](/docs/api-reference/uploads/part-object) to. Currently, an Upload can accept at most 8 GB in total and expires after an hour after you create it.
+    # 
+    # Once you complete the Upload, we will create a [File](/docs/api-reference/files/object) object that contains all the parts you uploaded. This File is usable in the rest of our platform as a regular File object.
+    # 
+    # For certain `purpose`s, the correct `mime_type` must be specified. Please refer to documentation for the supported MIME types for your use case:
+    # - [Assistants](/docs/assistants/tools/file-search/supported-files)
+    # 
+    # For guidance on the proper filename extensions for each purpose, please follow the documentation on [creating a File](/docs/api-reference/files/create).
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post uploads(CreateUploadRequest payload, map<string|string[]> headers = {}) returns Upload|error {
+        string resourcePath = string `/uploads`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Adds a [Part](/docs/api-reference/uploads/part-object) to an [Upload](/docs/api-reference/uploads/object) object. A Part represents a chunk of bytes from the file you are trying to upload. 
+    # 
+    # Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+    # 
+    # It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you [complete the Upload](/docs/api-reference/uploads/complete).
+    #
+    # + uploadId - The ID of the Upload
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post uploads/[string uploadId]/parts(AddUploadPartRequest payload, map<string|string[]> headers = {}) returns UploadPart|error {
+        string resourcePath = string `/uploads/${getEncodedUri(uploadId)}/parts`;
+        http:Request request = new;
+        mime:Entity[] bodyParts = check createBodyParts(check jsondata:toJson(payload).ensureType());
+        request.setBodyParts(bodyParts);
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Completes the [Upload](/docs/api-reference/uploads/object). 
+    # 
+    # Within the returned Upload object, there is a nested [File](/docs/api-reference/files/object) object that is ready to use in the rest of the platform.
+    # 
+    # You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+    # 
+    # The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the Upload object. No Parts may be added after an Upload is completed.
+    #
+    # + uploadId - The ID of the Upload
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post uploads/[string uploadId]/complete(CompleteUploadRequest payload, map<string|string[]> headers = {}) returns Upload|error {
+        string resourcePath = string `/uploads/${getEncodedUri(uploadId)}/complete`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Cancels the Upload. No Parts may be added after an Upload is cancelled.
+    #
+    # + uploadId - The ID of the Upload
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post uploads/[string uploadId]/cancel(map<string|string[]> headers = {}) returns Upload|error {
+        string resourcePath = string `/uploads/${getEncodedUri(uploadId)}/cancel`;
+        http:Request request = new;
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # List your organization's fine-tuning jobs
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get fine_tuning/jobs(map<string|string[]> headers = {}, *ListPaginatedFineTuningJobsQueries queries) returns ListPaginatedFineTuningJobsResponse|error {
+        string resourcePath = string `/fine_tuning/jobs`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Creates a fine-tuning job which begins the process of creating a new model from a given dataset.
+    # 
+    # Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete.
+    # 
+    # [Learn more about fine-tuning](/docs/guides/fine-tuning)
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post fine_tuning/jobs(CreateFineTuningJobRequest payload, map<string|string[]> headers = {}) returns FineTuningJob|error {
+        string resourcePath = string `/fine_tuning/jobs`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Get info about a fine-tuning job.
+    # 
+    # [Learn more about fine-tuning](/docs/guides/fine-tuning)
+    #
+    # + fineTuningJobId - The ID of the fine-tuning job
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get fine_tuning/jobs/[string fineTuningJobId](map<string|string[]> headers = {}) returns FineTuningJob|error {
+        string resourcePath = string `/fine_tuning/jobs/${getEncodedUri(fineTuningJobId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Get status updates for a fine-tuning job.
+    #
+    # + fineTuningJobId - The ID of the fine-tuning job to get events for
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get fine_tuning/jobs/[string fineTuningJobId]/events(map<string|string[]> headers = {}, *ListFineTuningEventsQueries queries) returns ListFineTuningJobEventsResponse|error {
+        string resourcePath = string `/fine_tuning/jobs/${getEncodedUri(fineTuningJobId)}/events`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Immediately cancel a fine-tune job.
+    #
+    # + fineTuningJobId - The ID of the fine-tuning job to cancel
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post fine_tuning/jobs/[string fineTuningJobId]/cancel(map<string|string[]> headers = {}) returns FineTuningJob|error {
+        string resourcePath = string `/fine_tuning/jobs/${getEncodedUri(fineTuningJobId)}/cancel`;
+        http:Request request = new;
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # List checkpoints for a fine-tuning job.
+    #
+    # + fineTuningJobId - The ID of the fine-tuning job to get checkpoints for
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get fine_tuning/jobs/[string fineTuningJobId]/checkpoints(map<string|string[]> headers = {}, *ListFineTuningJobCheckpointsQueries queries) returns ListFineTuningJobCheckpointsResponse|error {
+        string resourcePath = string `/fine_tuning/jobs/${getEncodedUri(fineTuningJobId)}/checkpoints`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Lists the currently available models, and provides basic information about each one such as the owner and availability.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get models(map<string|string[]> headers = {}) returns ListModelsResponse|error {
+        string resourcePath = string `/models`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
+    #
+    # + model - The ID of the model to use for this request
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get models/[string model](map<string|string[]> headers = {}) returns Model|error {
+        string resourcePath = string `/models/${getEncodedUri(model)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Delete a fine-tuned model. You must have the Owner role in your organization to delete a model.
+    #
+    # + model - The model to delete
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete models/[string model](map<string|string[]> headers = {}) returns DeleteModelResponse|error {
+        string resourcePath = string `/models/${getEncodedUri(model)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Classifies if text is potentially harmful.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post moderations(CreateModerationRequest payload, map<string|string[]> headers = {}) returns CreateModerationResponse|error {
+        string resourcePath = string `/moderations`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Returns a list of assistants.
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get assistants(map<string|string[]> headers = {}, *ListAssistantsQueries queries) returns ListAssistantsResponse|error {
+        string resourcePath = string `/assistants`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Create an assistant with a model and instructions.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post assistants(CreateAssistantRequest payload, map<string|string[]> headers = {}) returns AssistantObject|error {
+        string resourcePath = string `/assistants`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves an assistant.
+    #
+    # + assistantId - The ID of the assistant to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get assistants/[string assistantId](map<string|string[]> headers = {}) returns AssistantObject|error {
+        string resourcePath = string `/assistants/${getEncodedUri(assistantId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Modifies an assistant.
+    #
+    # + assistantId - The ID of the assistant to modify
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post assistants/[string assistantId](ModifyAssistantRequest payload, map<string|string[]> headers = {}) returns AssistantObject|error {
+        string resourcePath = string `/assistants/${getEncodedUri(assistantId)}`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Delete an assistant.
+    #
+    # + assistantId - The ID of the assistant to delete
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete assistants/[string assistantId](map<string|string[]> headers = {}) returns DeleteAssistantResponse|error {
+        string resourcePath = string `/assistants/${getEncodedUri(assistantId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Create a thread.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads(CreateThreadRequest payload, map<string|string[]> headers = {}) returns ThreadObject|error {
+        string resourcePath = string `/threads`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves a thread.
+    #
+    # + threadId - The ID of the thread to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId](map<string|string[]> headers = {}) returns ThreadObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Modifies a thread.
+    #
+    # + threadId - The ID of the thread to modify. Only the `metadata` can be modified
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId](ModifyThreadRequest payload, map<string|string[]> headers = {}) returns ThreadObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Delete a thread.
+    #
+    # + threadId - The ID of the thread to delete
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete threads/[string threadId](map<string|string[]> headers = {}) returns DeleteThreadResponse|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Returns a list of messages for a given thread.
+    #
+    # + threadId - The ID of the [thread](/docs/api-reference/threads) the messages belong to
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId]/messages(map<string|string[]> headers = {}, *ListMessagesQueries queries) returns ListMessagesResponse|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/messages`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Create a message.
+    #
+    # + threadId - The ID of the [thread](/docs/api-reference/threads) to create a message for
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId]/messages(CreateMessageRequest payload, map<string|string[]> headers = {}) returns MessageObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/messages`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieve a message.
+    #
+    # + threadId - The ID of the [thread](/docs/api-reference/threads) to which this message belongs
+    # + messageId - The ID of the message to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId]/messages/[string messageId](map<string|string[]> headers = {}) returns MessageObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/messages/${getEncodedUri(messageId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Modifies a message.
+    #
+    # + threadId - The ID of the thread to which this message belongs
+    # + messageId - The ID of the message to modify
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId]/messages/[string messageId](ModifyMessageRequest payload, map<string|string[]> headers = {}) returns MessageObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/messages/${getEncodedUri(messageId)}`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Deletes a message.
+    #
+    # + threadId - The ID of the thread to which this message belongs
+    # + messageId - The ID of the message to delete
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete threads/[string threadId]/messages/[string messageId](map<string|string[]> headers = {}) returns DeleteMessageResponse|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/messages/${getEncodedUri(messageId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Create a thread and run it in one request.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/runs(CreateThreadAndRunRequest payload, map<string|string[]> headers = {}) returns RunObject|error {
+        string resourcePath = string `/threads/runs`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Returns a list of runs belonging to a thread.
+    #
+    # + threadId - The ID of the thread the run belongs to
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId]/runs(map<string|string[]> headers = {}, *ListRunsQueries queries) returns ListRunsResponse|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Create a run.
+    #
+    # + threadId - The ID of the thread to run
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId]/runs(CreateRunRequest payload, map<string|string[]> headers = {}) returns RunObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves a run.
+    #
+    # + threadId - The ID of the [thread](/docs/api-reference/threads) that was run
+    # + runId - The ID of the run to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId]/runs/[string runId](map<string|string[]> headers = {}) returns RunObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs/${getEncodedUri(runId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Modifies a run.
+    #
+    # + threadId - The ID of the [thread](/docs/api-reference/threads) that was run
+    # + runId - The ID of the run to modify
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId]/runs/[string runId](ModifyRunRequest payload, map<string|string[]> headers = {}) returns RunObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs/${getEncodedUri(runId)}`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # When a run has the `status: "requires_action"` and `required_action.type` is `submit_tool_outputs`, this endpoint can be used to submit the outputs from the tool calls once they're all completed. All outputs must be submitted in a single request.
+    #
+    # + threadId - The ID of the [thread](/docs/api-reference/threads) to which this run belongs
+    # + runId - The ID of the run that requires the tool output submission
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId]/runs/[string runId]/submit_tool_outputs(SubmitToolOutputsRunRequest payload, map<string|string[]> headers = {}) returns RunObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs/${getEncodedUri(runId)}/submit_tool_outputs`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Cancels a run that is `in_progress`.
+    #
+    # + threadId - The ID of the thread to which this run belongs
+    # + runId - The ID of the run to cancel
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post threads/[string threadId]/runs/[string runId]/cancel(map<string|string[]> headers = {}) returns RunObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs/${getEncodedUri(runId)}/cancel`;
+        http:Request request = new;
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Returns a list of run steps belonging to a run.
+    #
+    # + threadId - The ID of the thread the run and run steps belong to
+    # + runId - The ID of the run the run steps belong to
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId]/runs/[string runId]/steps(map<string|string[]> headers = {}, *ListRunStepsQueries queries) returns ListRunStepsResponse|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs/${getEncodedUri(runId)}/steps`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Retrieves a run step.
+    #
+    # + threadId - The ID of the thread to which the run and run step belongs
+    # + runId - The ID of the run to which the run step belongs
+    # + stepId - The ID of the run step to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get threads/[string threadId]/runs/[string runId]/steps/[string stepId](map<string|string[]> headers = {}) returns RunStepObject|error {
+        string resourcePath = string `/threads/${getEncodedUri(threadId)}/runs/${getEncodedUri(runId)}/steps/${getEncodedUri(stepId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Returns a list of vector stores.
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get vector_stores(map<string|string[]> headers = {}, *ListVectorStoresQueries queries) returns ListVectorStoresResponse|error {
+        string resourcePath = string `/vector_stores`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Create a vector store.
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post vector_stores(CreateVectorStoreRequest payload, map<string|string[]> headers = {}) returns VectorStoreObject|error {
+        string resourcePath = string `/vector_stores`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves a vector store.
+    #
+    # + vectorStoreId - The ID of the vector store to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get vector_stores/[string vectorStoreId](map<string|string[]> headers = {}) returns VectorStoreObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Modifies a vector store.
+    #
+    # + vectorStoreId - The ID of the vector store to modify
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post vector_stores/[string vectorStoreId](UpdateVectorStoreRequest payload, map<string|string[]> headers = {}) returns VectorStoreObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Delete a vector store.
+    #
+    # + vectorStoreId - The ID of the vector store to delete
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete vector_stores/[string vectorStoreId](map<string|string[]> headers = {}) returns DeleteVectorStoreResponse|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Returns a list of vector store files.
+    #
+    # + vectorStoreId - The ID of the vector store that the files belong to
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get vector_stores/[string vectorStoreId]/files(map<string|string[]> headers = {}, *ListVectorStoreFilesQueries queries) returns ListVectorStoreFilesResponse|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/files`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Create a vector store file by attaching a [File](/docs/api-reference/files) to a [vector store](/docs/api-reference/vector-stores/object).
+    #
+    # + vectorStoreId - The ID of the vector store for which to create a File
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post vector_stores/[string vectorStoreId]/files(CreateVectorStoreFileRequest payload, map<string|string[]> headers = {}) returns VectorStoreFileObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/files`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves a vector store file.
+    #
+    # + vectorStoreId - The ID of the vector store that the file belongs to
+    # + fileId - The ID of the file being retrieved
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get vector_stores/[string vectorStoreId]/files/[string fileId](map<string|string[]> headers = {}) returns VectorStoreFileObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/files/${getEncodedUri(fileId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Delete a vector store file. This will remove the file from the vector store but the file itself will not be deleted. To delete the file, use the [delete file](/docs/api-reference/files/delete) endpoint.
+    #
+    # + vectorStoreId - The ID of the vector store that the file belongs to
+    # + fileId - The ID of the file to delete
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function delete vector_stores/[string vectorStoreId]/files/[string fileId](map<string|string[]> headers = {}) returns DeleteVectorStoreFileResponse|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/files/${getEncodedUri(fileId)}`;
+        return self.clientEp->delete(resourcePath, headers = headers);
+    }
+
+    # Create a vector store file batch.
+    #
+    # + vectorStoreId - The ID of the vector store for which to create a File Batch
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post vector_stores/[string vectorStoreId]/file_batches(CreateVectorStoreFileBatchRequest payload, map<string|string[]> headers = {}) returns VectorStoreFileBatchObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/file_batches`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves a vector store file batch.
+    #
+    # + vectorStoreId - The ID of the vector store that the file batch belongs to
+    # + batchId - The ID of the file batch being retrieved
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function get vector_stores/[string vectorStoreId]/file_batches/[string batchId](map<string|string[]> headers = {}) returns VectorStoreFileBatchObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/file_batches/${getEncodedUri(batchId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as possible.
+    #
+    # + vectorStoreId - The ID of the vector store that the file batch belongs to
+    # + batchId - The ID of the file batch to cancel
+    # + headers - Headers to be sent with the request 
+    # + return - OK 
+    resource isolated function post vector_stores/[string vectorStoreId]/file_batches/[string batchId]/cancel(map<string|string[]> headers = {}) returns VectorStoreFileBatchObject|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/file_batches/${getEncodedUri(batchId)}/cancel`;
+        http:Request request = new;
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Returns a list of vector store files in a batch.
+    #
+    # + vectorStoreId - The ID of the vector store that the files belong to
+    # + batchId - The ID of the file batch that the files belong to
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - OK 
+    resource isolated function get vector_stores/[string vectorStoreId]/file_batches/[string batchId]/files(map<string|string[]> headers = {}, *ListFilesInVectorStoreBatchQueries queries) returns ListVectorStoreFilesResponse|error {
+        string resourcePath = string `/vector_stores/${getEncodedUri(vectorStoreId)}/file_batches/${getEncodedUri(batchId)}/files`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # List your organization's batches.
+    #
+    # + headers - Headers to be sent with the request 
+    # + queries - Queries to be sent with the request 
+    # + return - Batch listed successfully 
+    resource isolated function get batches(map<string|string[]> headers = {}, *ListBatchesQueries queries) returns ListBatchesResponse|error {
+        string resourcePath = string `/batches`;
+        resourcePath = resourcePath + check getPathForQueryParam(queries);
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Creates and executes a batch from an uploaded file of requests
+    #
+    # + headers - Headers to be sent with the request 
+    # + return - Batch created successfully 
+    resource isolated function post batches(BatchesBody payload, map<string|string[]> headers = {}) returns Batch|error {
+        string resourcePath = string `/batches`;
+        http:Request request = new;
+        json jsonBody = jsondata:toJson(payload);
+        request.setPayload(jsonBody, "application/json");
+        return self.clientEp->post(resourcePath, request, headers);
+    }
+
+    # Retrieves a batch.
+    #
+    # + batchId - The ID of the batch to retrieve
+    # + headers - Headers to be sent with the request 
+    # + return - Batch retrieved successfully 
+    resource isolated function get batches/[string batchId](map<string|string[]> headers = {}) returns Batch|error {
+        string resourcePath = string `/batches/${getEncodedUri(batchId)}`;
+        return self.clientEp->get(resourcePath, headers);
+    }
+
+    # Cancels an in-progress batch. The batch will be in status `cancelling` for up to 10 minutes, before changing to `cancelled`, where it will have partial results (if any) available in the output file.
+    #
+    # + batchId - The ID of the batch to cancel
+    # + headers - Headers to be sent with the request 
+    # + return - Batch is cancelling. Returns the cancelling batch's details 
+    resource isolated function post batches/[string batchId]/cancel(map<string|string[]> headers = {}) returns Batch|error {
+        string resourcePath = string `/batches/${getEncodedUri(batchId)}/cancel`;
+        http:Request request = new;
         return self.clientEp->post(resourcePath, request, headers);
     }
 }
