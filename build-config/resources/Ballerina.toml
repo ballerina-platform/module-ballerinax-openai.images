@@ -5,7 +5,7 @@ name = "openai.images"
 version = "@toml.version@"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["'AI/Images'", "'OpenAI'", "'Cost/Paid'", "'Image generation'", "'DALL-E 3'", "'Vendor/OpenAI'", "Vendor/OpenAI", "Area/AI", "Type/Connector"]
+keywords = ["AI/Images", "OpenAI", "Cost/Paid", "Image generation", "DALL-E 3", "Vendor/OpenAI", "Vendor/OpenAI", "Area/AI", "Type/Connector"]
 icon = "icon.png"
 repository = "https://github.com/ballerina-platform/module-ballerinax-openai.images"
 
