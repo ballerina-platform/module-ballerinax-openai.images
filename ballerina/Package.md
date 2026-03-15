@@ -1,8 +1,16 @@
 ## Overview
 
-[OpenAI](https://openai.com/), an AI research organization focused on creating friendly AI for humanity, offers the [OpenAI API](https://platform.openai.com/docs/api-reference/introduction) to access its powerful AI models for tasks like natural language processing and image generation.
+[OpenAI](https://openai.com/) offers powerful AI models for tasks like natural language processing and image generation.
 
-The `ballarinax/openai.images` package offers APIs to connect and interact with [OpenAI REST API v1](https://platform.openai.com/docs/api-reference/images/create) providing access to the new DALL.E models developed by OpenAI for various image-related tasks.
+The OpenAI Images connector provides access to OpenAI's DALL·E models, enabling developers to integrate advanced image generation and manipulation capabilities into their applications.
+
+### Key Features
+
+- Support for DALL·E 3 and DALL·E 2 models
+- High-quality image generation from text prompts
+- Image editing and variation capabilities
+- Flexible image sizing and response formats (URL, Base64)
+- Simplified authentication and project-based access
 
 ## Setup guide
 
