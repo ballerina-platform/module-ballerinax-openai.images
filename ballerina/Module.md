@@ -4,6 +4,14 @@
 
 The `ballarinax/openai.images` package offers APIs to connect and interact with [OpenAI REST API v1](https://platform.openai.com/docs/api-reference/images/create) providing access to the new DALL.E models developed by OpenAI for various image-related tasks.
 
+
+### Key Features
+
+- Generate images using DALL-E models
+- Create image variations and edits
+- Support for multiple image sizes and formats
+- Configurable generation parameters
+
 ## Setup guide
 
 To use the OpenAI Connector, you must have access to the OpenAI API through a [OpenAI Platform account](https://platform.openai.com) and a project under it. If you do not have a OpenAI Platform account, you can sign up for one [here](https://platform.openai.com/signup).
