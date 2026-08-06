@@ -1,8 +1,6 @@
 ## Overview
 
-[OpenAI](https://openai.com/) offers powerful AI models for tasks like natural language processing and image generation.
-
-The OpenAI Images connector provides access to OpenAI's DALL·E models, enabling developers to integrate advanced image generation and manipulation capabilities into their applications.
+The `openai.images` module is a direct, fully-typed REST connector for OpenAI's [Images API](https://platform.openai.com/docs/api-reference/images). Use it as a standalone client to generate, edit, and create variations of images with DALL·E 3 and DALL·E 2 from text prompts, independent of the `ballerina/ai` agent framework.
 
 ### Key Features
 
